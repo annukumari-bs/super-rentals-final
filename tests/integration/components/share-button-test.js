@@ -1,13 +1,8 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'super-rentals/tests/helpers';
+import { setupRenderingTest } from 'ember-qunit';
 import Service from '@ember/service';
 import { find, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
-
-const MOCK_URL = new URL(
-  '/foo/bar?baz=true#some-section',
-  window.location.origin
-);
 
 class MockRouterService extends Service {
   get currentURL() {
@@ -35,12 +30,21 @@ module('Integration | Component | share-button', function (hooks) {
       .dom('a')
       .hasAttribute('target', '_blank')
       .hasAttribute('rel', 'external nofollow noopener noreferrer')
+      .hasAttribute(
+        'href',
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          new URL('/foo/bar?baz=true#some-section', window.location.origin)
+        )}`
+      )
       .hasAttribute('href', /^https:\/\/twitter\.com\/intent\/tweet/)
       .hasClass('share')
       .hasClass('button')
       .containsText('Tweet this!');
 
-    assert.strictEqual(this.tweetParam('url'), MOCK_URL.href);
+    assert.equal(
+      this.tweetParam('url'),
+      new URL('/foo/bar?baz=true#some-section', window.location.origin)
+    );
   });
 
   test('it supports passing @text', async function (assert) {
@@ -48,7 +52,7 @@ module('Integration | Component | share-button', function (hooks) {
       hbs`<ShareButton @text="Hello Twitter!">Tweet this!</ShareButton>`
     );
 
-    assert.strictEqual(this.tweetParam('text'), 'Hello Twitter!');
+    assert.equal(this.tweetParam('text'), 'Hello Twitter!');
   });
 
   test('it supports passing @hashtags', async function (assert) {
@@ -56,12 +60,12 @@ module('Integration | Component | share-button', function (hooks) {
       hbs`<ShareButton @hashtags="foo,bar,baz">Tweet this!</ShareButton>`
     );
 
-    assert.strictEqual(this.tweetParam('hashtags'), 'foo,bar,baz');
+    assert.equal(this.tweetParam('hashtags'), 'foo,bar,baz');
   });
 
   test('it supports passing @via', async function (assert) {
     await render(hbs`<ShareButton @via="emberjs">Tweet this!</ShareButton>`);
-    assert.strictEqual(this.tweetParam('via'), 'emberjs');
+    assert.equal(this.tweetParam('via'), 'emberjs');
   });
 
   test('it supports adding extra classes', async function (assert) {
