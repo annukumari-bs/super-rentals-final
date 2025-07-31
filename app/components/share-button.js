@@ -1,9 +1,9 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
 const TWEET_INTENT = 'https://twitter.com/intent/tweet';
 
-export default class ShareButtonComponent extends Component {
+export default class ShareButton extends Component {
   @service router;
 
   get currentURL() {

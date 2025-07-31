@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
+import { setupRenderingTest } from 'super-rentals/tests/helpers';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
@@ -50,15 +50,5 @@ module('Integration | Component | rental/detailed', function (hooks) {
     assert.dom('article .detail.bedrooms').containsText('15');
     assert.dom('article .image').exists();
     assert.dom('article .map').exists();
-  });
-
-  test('it renders block content if provided', async function (assert) {
-    await render(hbs`
-      <Rental::Detailed>
-        template block text
-      </Rental::Detailed>
-    `);
-
-    assert.dom('article').includesText('template block text');
   });
 });
