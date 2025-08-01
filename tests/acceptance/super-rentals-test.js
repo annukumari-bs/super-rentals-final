@@ -1,11 +1,12 @@
 import { module, test } from 'qunit';
 import { click, find, visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
+import percySnapshot from '@percy/ember';
 
 module('Acceptance | super rentals', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('visiting /', async function (assert) {
+  test.only('visiting /', async function (assert) {
     await visit('/');
 
     assert.equal(currentURL(), '/');
@@ -17,6 +18,8 @@ module('Acceptance | super rentals', function (hooks) {
     await click('.jumbo a.button');
 
     assert.equal(currentURL(), '/about');
+    await percySnapshot(assert);
+    console.log('--------------------------------');
   });
 
   test('viewing the details of a rental property', async function (assert) {
